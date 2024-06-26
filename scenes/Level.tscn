@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://bttt7gb1duv0o"]
+
+[ext_resource type="PackedScene" uid="uid://b688vcriyntw6" path="res://scenes/probe.tscn" id="1_tu4y6"]
+
+[node name="Level" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="Probe" parent="." instance=ExtResource("1_tu4y6")]
+_speed = 250.0
