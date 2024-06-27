@@ -7,7 +7,6 @@ public partial class Camera2DFollow : Camera2D
 
 	private CharacterBody2D _probe;
 
-	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		_probe = GetNode<CharacterBody2D>(_followNode);
