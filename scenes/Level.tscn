@@ -12,4 +12,3 @@ script = ExtResource("1_wsdmx")
 _followNode = NodePath("../Probe")
 
 [node name="Probe" parent="." instance=ExtResource("1_tu4y6")]
-_speed = 250.0
