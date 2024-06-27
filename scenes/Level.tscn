@@ -1,10 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://bttt7gb1duv0o"]
+[gd_scene load_steps=3 format=3 uid="uid://bttt7gb1duv0o"]
 
 [ext_resource type="PackedScene" uid="uid://b688vcriyntw6" path="res://scenes/probe.tscn" id="1_tu4y6"]
+[ext_resource type="Script" path="res://scripts/Camera2DFollow.cs" id="1_wsdmx"]
 
 [node name="Level" type="Node2D"]
 
 [node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(0, -3)
+zoom = Vector2(0.75, 0.75)
+script = ExtResource("1_wsdmx")
+_followNode = NodePath("../Probe")
 
 [node name="Probe" parent="." instance=ExtResource("1_tu4y6")]
 _speed = 250.0

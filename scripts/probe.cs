@@ -1,3 +1,4 @@
+using System;
 using Godot;
 
 public partial class probe : CharacterBody2D
@@ -19,7 +20,7 @@ public partial class probe : CharacterBody2D
 	{
 		velocity = Velocity;
 
-		direction = Input.GetVector("move_left", "move_right", "move_up", "move_down");
+		direction = Input.GetVector("move_left", "move_right", "move_up", "move_down").Normalized();
 
 		if (direction != Vector2.Zero)
 		{
