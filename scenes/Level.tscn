@@ -6,7 +6,6 @@
 [node name="Level" type="Node2D"]
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(0, -3)
 zoom = Vector2(0.75, 0.75)
 script = ExtResource("1_wsdmx")
 _followNode = NodePath("../Probe")

@@ -19,6 +19,6 @@ public partial class Camera2DFollow : Camera2D
 
 	public override void _PhysicsProcess(double delta)
 	{
-		Position = _probe.Position;
+		GlobalPosition = _probe.Transform.Origin;
 	}
 }

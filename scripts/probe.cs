@@ -14,6 +14,20 @@ public partial class probe : CharacterBody2D
 	private Vector2 velocity;
 	private Vector2 direction;
 
+	[Export]
+	private Marker2D spawnPoint;
+
+	[Export]
+	private PackedScene scannerPackedScene;
+
+	public override void _UnhandledKeyInput(InputEvent @event)
+	{
+		if (@event.IsActionPressed("scan"))
+		{
+			SpawnScannerRing();
+		}
+	}
+
 
 	public override void _PhysicsProcess(double delta)
 	{
@@ -34,5 +48,12 @@ public partial class probe : CharacterBody2D
 
 		Velocity = velocity;
 		MoveAndSlide();
+	}
+
+	private void SpawnScannerRing()
+	{
+		PackedScene scannerToAdd = ResourceLoader.Load<PackedScene>(scannerPackedScene.ResourcePath);
+		Area2D scannerInstance = scannerToAdd.Instantiate() as Area2D;
+		spawnPoint.AddChild(scannerInstance);
 	}
 }
