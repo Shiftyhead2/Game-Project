@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bttt7gb1duv0o"]
 
 [ext_resource type="PackedScene" uid="uid://b688vcriyntw6" path="res://scenes/probe.tscn" id="1_tu4y6"]
-[ext_resource type="Script" path="res://scripts/Camera2DFollow.cs" id="1_wsdmx"]
+[ext_resource type="Script" path="res://scripts/Camera/Camera2DFollow.cs" id="1_wsdmx"]
 
 [node name="Level" type="Node2D"]
 
