@@ -7,6 +7,8 @@ public partial class Camera2DFollow : Camera2D
 
 	private CharacterBody2D _probe;
 
+	private Tween _followTween;
+
 	public override void _Ready()
 	{
 		_probe = GetNode<CharacterBody2D>(_followNode);
@@ -17,8 +19,18 @@ public partial class Camera2DFollow : Camera2D
 		}
 	}
 
-	public override void _PhysicsProcess(double delta)
+	public override void _Process(double delta)
 	{
-		GlobalPosition = _probe.Transform.Origin;
+		if (_probe != null)
+		{
+			if (_followTween != null)
+			{
+				_followTween.Kill();
+			}
+
+			_followTween = CreateTween().SetEase(Tween.EaseType.Out).SetTrans(Tween.TransitionType.Sine).SetParallel(true);
+			_followTween.TweenProperty(this, "position:x", _probe.Position.X, 0.5f);
+			_followTween.TweenProperty(this, "position:y", _probe.Position.Y, 0.5f);
+		}
 	}
 }

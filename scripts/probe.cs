@@ -11,14 +11,14 @@ public partial class probe : CharacterBody2D
 	private float _deacceleration = 5.0f;
 
 
-	private Vector2 velocity;
-	private Vector2 direction;
+	private Vector2 _velocity;
+	private Vector2 _direction;
 
 	[Export]
-	private Marker2D spawnPoint;
+	private Marker2D _spawnPoint;
 
 	[Export]
-	private PackedScene scannerPackedScene;
+	private PackedScene _scannerPackedScene;
 
 	public override void _UnhandledKeyInput(InputEvent @event)
 	{
@@ -29,31 +29,31 @@ public partial class probe : CharacterBody2D
 	}
 
 
-	public override void _PhysicsProcess(double delta)
+	public override void _Process(double delta)
 	{
-		velocity = Velocity;
+		_velocity = Velocity;
 
-		direction = Input.GetVector("move_left", "move_right", "move_up", "move_down").Normalized();
+		_direction = Input.GetVector("move_left", "move_right", "move_up", "move_down").Normalized();
 
-		if (direction != Vector2.Zero)
+		if (_direction != Vector2.Zero)
 		{
-			velocity.X = Mathf.MoveToward(velocity.X, _speed * direction.X, _acceleration);
-			velocity.Y = Mathf.MoveToward(velocity.Y, _speed * direction.Y, _acceleration);
+			_velocity.X = Mathf.MoveToward(_velocity.X, _speed * _direction.X, _acceleration);
+			_velocity.Y = Mathf.MoveToward(_velocity.Y, _speed * _direction.Y, _acceleration);
 		}
 		else
 		{
-			velocity.X = Mathf.MoveToward(velocity.X, 0f, _deacceleration);
-			velocity.Y = Mathf.MoveToward(velocity.Y, 0f, _deacceleration);
+			_velocity.X = Mathf.MoveToward(_velocity.X, 0f, _deacceleration);
+			_velocity.Y = Mathf.MoveToward(_velocity.Y, 0f, _deacceleration);
 		}
 
-		Velocity = velocity;
+		Velocity = _velocity;
 		MoveAndSlide();
 	}
 
 	private void SpawnScannerRing()
 	{
-		PackedScene scannerToAdd = ResourceLoader.Load<PackedScene>(scannerPackedScene.ResourcePath);
-		Area2D scannerInstance = scannerToAdd.Instantiate() as Area2D;
-		spawnPoint.AddChild(scannerInstance);
+		PackedScene _scannerToAdd = ResourceLoader.Load<PackedScene>(_scannerPackedScene.ResourcePath);
+		ScannerRing _scannerInstance = _scannerToAdd.Instantiate() as ScannerRing;
+		_spawnPoint.AddChild(_scannerInstance);
 	}
 }

@@ -7,10 +7,10 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1n2ho"]
 size = Vector2(131, 133)
 
-[node name="Probe" type="CharacterBody2D" node_paths=PackedStringArray("spawnPoint")]
+[node name="Probe" type="CharacterBody2D" node_paths=PackedStringArray("_spawnPoint")]
 script = ExtResource("1_r8pyg")
-spawnPoint = NodePath("SpawnPoint")
-scannerPackedScene = ExtResource("2_qfu15")
+_spawnPoint = NodePath("SpawnPoint")
+_scannerPackedScene = ExtResource("2_qfu15")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_i5b1x")
