@@ -1,11 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://dmiv4en5wmfp6"]
+[gd_scene load_steps=3 format=3 uid="uid://dmiv4en5wmfp6"]
+
+[ext_resource type="Script" path="res://scripts/Planets/Planet.cs" id="1_w0evf"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_d1fkv"]
 radius = 64.0078
 
-[node name="Planet" type="StaticBody2D"]
+[node name="Planet" type="StaticBody2D" node_paths=PackedStringArray("_sprite")]
 collision_layer = 2
 collision_mask = 0
+script = ExtResource("1_w0evf")
+_sprite = NodePath("Sprite2D")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 

@@ -1,6 +1,6 @@
 using Godot;
 
-public partial class probe : CharacterBody2D
+public partial class Probe : CharacterBody2D
 {
 	[Export]
 	private float _speed = 300.0f;
@@ -52,8 +52,7 @@ public partial class probe : CharacterBody2D
 
 	private void SpawnScannerRing()
 	{
-		PackedScene _scannerToAdd = ResourceLoader.Load<PackedScene>(_scannerPackedScene.ResourcePath);
-		ScannerRing _scannerInstance = _scannerToAdd.Instantiate() as ScannerRing;
-		_spawnPoint.AddChild(_scannerInstance);
+		ScannerRing _scannerToAdd = ResourceLoader.Load<PackedScene>(_scannerPackedScene.ResourcePath).Instantiate() as ScannerRing;
+		_spawnPoint.AddChild(_scannerToAdd);
 	}
 }

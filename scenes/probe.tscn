@@ -1,14 +1,15 @@
 [gd_scene load_steps=5 format=3 uid="uid://b688vcriyntw6"]
 
 [ext_resource type="Texture2D" uid="uid://dp3rgbaubj4bu" path="res://icon.svg" id="1_i5b1x"]
-[ext_resource type="Script" path="res://scripts/Probe/probe.cs" id="1_r8pyg"]
+[ext_resource type="Script" path="res://scripts/Probe/Probe.cs" id="1_qu020"]
 [ext_resource type="PackedScene" uid="uid://cpbln316qkt1h" path="res://scenes/scanner_ring.tscn" id="2_qfu15"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1n2ho"]
 size = Vector2(131, 133)
 
 [node name="Probe" type="CharacterBody2D" node_paths=PackedStringArray("_spawnPoint")]
-script = ExtResource("1_r8pyg")
+z_index = 2
+script = ExtResource("1_qu020")
 _spawnPoint = NodePath("SpawnPoint")
 _scannerPackedScene = ExtResource("2_qfu15")
 
