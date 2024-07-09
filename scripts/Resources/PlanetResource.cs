@@ -12,12 +12,20 @@ public partial class PlanetResource : Resource
   [Export]
   public Texture2D PlanetTexture { get; set; }
 
-  public PlanetResource() : this(string.Empty, new Vector2(0, 0), null) { }
+  [Export]
+  public bool IsEarth { get; set; }
 
-  public PlanetResource(string planetName, Vector2 spawnPosition, Texture2D planetTexture)
+  [Export]
+  public bool IsScannable { get; set; }
+
+  public PlanetResource() : this(string.Empty, new Vector2(0, 0), null, false, false) { }
+
+  public PlanetResource(string planetName, Vector2 spawnPosition, Texture2D planetTexture, bool isEarth, bool isScannable)
   {
     PlanetName = planetName;
     SpawnPosition = spawnPosition;
     PlanetTexture = planetTexture;
+    IsEarth = isEarth;
+    IsScannable = isScannable;
   }
 }

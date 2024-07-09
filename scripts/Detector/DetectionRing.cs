@@ -1,6 +1,6 @@
 using Godot;
 
-public partial class ScannerRing : Area2D
+public partial class DetectionRing : Area2D
 {
 
 	// Called when the node enters the scene tree for the first time.

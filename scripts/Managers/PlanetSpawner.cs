@@ -23,6 +23,10 @@ public partial class PlanetSpawner : Node
 			Planet planetToSpawn = ResourceLoader.Load<PackedScene>(_planetScene.ResourcePath).Instantiate() as Planet;
 			Owner.AddChild(planetToSpawn);
 			planetToSpawn.SetUpPlanet(planet);
+			if (planetToSpawn.IsPlanetEarth())
+			{
+				EventManager.ExecuteSetPlanetEarth(planetToSpawn);
+			}
 		}
 	}
 }

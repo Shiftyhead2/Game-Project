@@ -18,13 +18,36 @@ public partial class Probe : CharacterBody2D
 	private Marker2D _spawnPoint;
 
 	[Export]
-	private PackedScene _scannerPackedScene;
+	private PackedScene _detectorPackedScene;
+
+	[Export]
+	private Area2D _scannerArea;
+
+	[Export]
+	private Planet _scannablePlanetInRange;
+
+
+	public override void _Ready()
+	{
+		if (_scannerArea != null)
+		{
+			_scannerArea.BodyEntered += OnBody2DEntered;
+			_scannerArea.BodyExited += OnBody2DExited;
+		}
+	}
 
 	public override void _UnhandledKeyInput(InputEvent @event)
 	{
 		if (@event.IsActionPressed("scan"))
 		{
-			SpawnScannerRing();
+			if (_scannablePlanetInRange == null)
+			{
+				SpawnScannerRing();
+			}
+			else
+			{
+				ScanPlanet();
+			}
 		}
 	}
 
@@ -52,7 +75,43 @@ public partial class Probe : CharacterBody2D
 
 	private void SpawnScannerRing()
 	{
-		ScannerRing _scannerToAdd = ResourceLoader.Load<PackedScene>(_scannerPackedScene.ResourcePath).Instantiate() as ScannerRing;
+		DetectionRing _scannerToAdd = ResourceLoader.Load<PackedScene>(_detectorPackedScene.ResourcePath).Instantiate() as DetectionRing;
 		_spawnPoint.AddChild(_scannerToAdd);
+	}
+
+	private void ScanPlanet()
+	{
+		EventManager.ExecuteOnScanPlanet(_scannablePlanetInRange);
+	}
+
+	private void OnBody2DEntered(Node2D body)
+	{
+		if (_scannablePlanetInRange != null)
+		{
+			return;
+		}
+
+		if (body is Planet)
+		{
+			Planet collidedPlanet = body as Planet;
+			if (collidedPlanet.IsPlanetScannable() && collidedPlanet.IsDetected())
+			{
+				_scannablePlanetInRange = collidedPlanet;
+			}
+		}
+
+	}
+
+	private void OnBody2DExited(Node2D body)
+	{
+		if (_scannablePlanetInRange == null)
+		{
+			return;
+		}
+
+		if (body is Planet)
+		{
+			_scannablePlanetInRange = null;
+		}
 	}
 }

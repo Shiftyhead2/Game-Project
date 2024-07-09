@@ -1,19 +1,19 @@
 [gd_scene load_steps=4 format=3 uid="uid://cpbln316qkt1h"]
 
-[ext_resource type="Script" path="res://scripts/Scanner/ScannerRing.cs" id="1_e0rb1"]
-[ext_resource type="Texture2D" uid="uid://bgsik5x7f435q" path="res://sprites/Ring.png" id="2_ehmmj"]
+[ext_resource type="Script" path="res://scripts/Detector/DetectionRing.cs" id="1_r0hsg"]
+[ext_resource type="Texture2D" uid="uid://bgsik5x7f435q" path="res://sprites/Ring.png" id="2_mnhy8"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_2xie1"]
 radius = 66.0
 
-[node name="ScannerRing" type="Area2D"]
+[node name="DetectorRing" type="Area2D"]
 scale = Vector2(1e-05, 1e-05)
 collision_layer = 0
 collision_mask = 2
-script = ExtResource("1_e0rb1")
+script = ExtResource("1_r0hsg")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_ehmmj")
+texture = ExtResource("2_mnhy8")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_2xie1")

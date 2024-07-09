@@ -8,3 +8,5 @@ script = ExtResource("1_gt8vr")
 PlanetName = "Venus"
 SpawnPosition = Vector2(1000, 0)
 PlanetTexture = ExtResource("1_mayjn")
+IsEarth = false
+IsScannable = true

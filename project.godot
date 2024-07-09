@@ -15,6 +15,10 @@ run/main_scene="res://scenes/Level.tscn"
 config/features=PackedStringArray("4.2", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+GameManager="*res://scripts/Managers/GameManager.cs"
+
 [display]
 
 window/size/viewport_width=1280
@@ -64,6 +68,7 @@ scan={
 2d_render/layer_2="invisible"
 2d_physics/layer_1="player"
 2d_physics/layer_2="detectable"
+2d_physics/layer_3="scannable"
 
 [rendering]
 

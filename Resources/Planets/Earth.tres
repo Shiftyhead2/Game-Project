@@ -8,3 +8,4 @@ script = ExtResource("1_yvfg5")
 PlanetName = "Earth"
 SpawnPosition = Vector2(0, 0)
 PlanetTexture = ExtResource("1_h4lyu")
+IsEarth = true
