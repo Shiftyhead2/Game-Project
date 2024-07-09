@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="PlanetResource" load_steps=3 format=3 uid="uid://pmo56s3sawcw"]
+
+[ext_resource type="Script" path="res://scripts/Resources/PlanetResource.cs" id="1_gt8vr"]
+[ext_resource type="Texture2D" uid="uid://cendhexyh3qfg" path="res://sprites/Planet.png" id="1_mayjn"]
+
+[resource]
+script = ExtResource("1_gt8vr")
+PlanetName = "Venus"
+SpawnPosition = Vector2(1000, 0)
+PlanetTexture = ExtResource("1_mayjn")
+IsEarth = false
+IsScannable = true

@@ -1,9 +1,18 @@
-[gd_scene load_steps=3 format=3 uid="uid://bttt7gb1duv0o"]
+[gd_scene load_steps=7 format=3 uid="uid://bttt7gb1duv0o"]
 
+[ext_resource type="Script" path="res://scripts/Managers/PlanetSpawner.cs" id="1_rsqxf"]
 [ext_resource type="PackedScene" uid="uid://b688vcriyntw6" path="res://scenes/probe.tscn" id="1_tu4y6"]
-[ext_resource type="Script" path="res://scripts/Camera2DFollow.cs" id="1_wsdmx"]
+[ext_resource type="Script" path="res://scripts/Camera/Camera2DFollow.cs" id="1_wsdmx"]
+[ext_resource type="Resource" uid="uid://cr2emjd5s4b0h" path="res://Resources/Planets/Earth.tres" id="2_igyer"]
+[ext_resource type="Resource" uid="uid://pmo56s3sawcw" path="res://Resources/Planets/Venus.tres" id="3_rdx7n"]
+[ext_resource type="PackedScene" uid="uid://dmiv4en5wmfp6" path="res://scenes/planet.tscn" id="3_vaewb"]
 
 [node name="Level" type="Node2D"]
+
+[node name="PlanetSpawner" type="Node" parent="."]
+script = ExtResource("1_rsqxf")
+_planets = [ExtResource("2_igyer"), ExtResource("3_rdx7n")]
+_planetScene = ExtResource("3_vaewb")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(0.75, 0.75)
