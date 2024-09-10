@@ -1,0 +1,27 @@
+[gd_scene load_steps=6 format=3 uid="uid://dmiv4en5wmfp6"]
+
+[ext_resource type="Script" path="res://scripts/Signals/Signals.cs" id="1_w0evf"]
+[ext_resource type="Shader" path="res://shaders/blip.gdshader" id="2_au10c"]
+[ext_resource type="Texture2D" uid="uid://cendhexyh3qfg" path="res://sprites/Planet.png" id="3_u8ccy"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2uc0e"]
+shader = ExtResource("2_au10c")
+shader_parameter/cutout = 0.2
+shader_parameter/inner_fill = 0.15
+shader_parameter/blink_speed = 2.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_d1fkv"]
+radius = 64.0078
+
+[node name="Signal" type="StaticBody2D" node_paths=PackedStringArray("_sprite")]
+collision_layer = 6
+collision_mask = 0
+script = ExtResource("1_w0evf")
+_sprite = NodePath("Sprite2D")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_2uc0e")
+texture = ExtResource("3_u8ccy")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_d1fkv")

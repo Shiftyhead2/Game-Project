@@ -10,9 +10,10 @@ size = Vector2(131, 133)
 [sub_resource type="CircleShape2D" id="CircleShape2D_o0jrw"]
 radius = 140.0
 
-[node name="Probe" type="CharacterBody2D" node_paths=PackedStringArray("_spawnPoint", "_scannerArea")]
+[node name="Probe" type="CharacterBody2D" node_paths=PackedStringArray("_timer", "_spawnPoint", "_scannerArea")]
 z_index = 2
 script = ExtResource("1_qu020")
+_timer = NodePath("Timer")
 _spawnPoint = NodePath("SpawnPoint")
 _detectorPackedScene = ExtResource("2_a18jf")
 _scannerArea = NodePath("ScannerRadius")
@@ -32,3 +33,7 @@ collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ScannerRadius"]
 shape = SubResource("CircleShape2D_o0jrw")
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="timeout" from="Timer" to="." method="resetDetect"]

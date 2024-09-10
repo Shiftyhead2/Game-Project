@@ -10,6 +10,15 @@ public partial class Probe : CharacterBody2D
 	[Export]
 	private float _deacceleration = 5.0f;
 
+	[Export]
+	private float _timeBetweenScans = 5.0f;
+
+	[Export]
+	private bool _canDetect = true;
+
+	[Export]
+	private Timer _timer;
+
 
 	private Vector2 _velocity;
 	private Vector2 _direction;
@@ -24,7 +33,9 @@ public partial class Probe : CharacterBody2D
 	private Area2D _scannerArea;
 
 	[Export]
-	private Planet _scannablePlanetInRange;
+	private Signals _scannableSignalsInRange;
+
+
 
 
 	public override void _Ready()
@@ -40,9 +51,12 @@ public partial class Probe : CharacterBody2D
 	{
 		if (@event.IsActionPressed("scan"))
 		{
-			if (_scannablePlanetInRange == null)
+			if (_scannableSignalsInRange == null)
 			{
-				SpawnScannerRing();
+				if (_canDetect)
+				{
+					SpawnScannerRing();
+				}
 			}
 			else
 			{
@@ -77,26 +91,28 @@ public partial class Probe : CharacterBody2D
 	{
 		DetectionRing _scannerToAdd = ResourceLoader.Load<PackedScene>(_detectorPackedScene.ResourcePath).Instantiate() as DetectionRing;
 		_spawnPoint.AddChild(_scannerToAdd);
+		_timer.Start(_timeBetweenScans);
+		_canDetect = false;
 	}
 
 	private void ScanPlanet()
 	{
-		EventManager.ExecuteOnScanPlanet(_scannablePlanetInRange);
+		EventManager.ExecuteOnScanPlanet(_scannableSignalsInRange);
 	}
 
 	private void OnBody2DEntered(Node2D body)
 	{
-		if (_scannablePlanetInRange != null)
+		if (_scannableSignalsInRange != null)
 		{
 			return;
 		}
 
-		if (body is Planet)
+		if (body is Signals)
 		{
-			Planet collidedPlanet = body as Planet;
-			if (collidedPlanet.IsPlanetScannable() && collidedPlanet.IsDetected())
+			Signals collidedSignal = body as Signals;
+			if (collidedSignal.IsPlanetScannable() && collidedSignal.IsDetected())
 			{
-				_scannablePlanetInRange = collidedPlanet;
+				_scannableSignalsInRange = collidedSignal;
 			}
 		}
 
@@ -104,14 +120,20 @@ public partial class Probe : CharacterBody2D
 
 	private void OnBody2DExited(Node2D body)
 	{
-		if (_scannablePlanetInRange == null)
+		if (_scannableSignalsInRange == null)
 		{
 			return;
 		}
 
-		if (body is Planet)
+		if (body is Signals)
 		{
-			_scannablePlanetInRange = null;
+			_scannableSignalsInRange = null;
 		}
+	}
+
+	public void resetDetect()
+	{
+		_canDetect = true;
+		_timer.Stop();
 	}
 }

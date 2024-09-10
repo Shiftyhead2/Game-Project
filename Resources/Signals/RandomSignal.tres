@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="SignalResource" load_steps=3 format=3 uid="uid://be4y82h0s3gpe"]
+
+[ext_resource type="Texture2D" uid="uid://cendhexyh3qfg" path="res://sprites/Planet.png" id="1_ehew1"]
+[ext_resource type="Script" path="res://scripts/Resources/SignalResource.cs" id="1_np5is"]
+
+[resource]
+script = ExtResource("1_np5is")
+SignalTexture = ExtResource("1_ehew1")
+IsScannable = true
