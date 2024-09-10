@@ -12,7 +12,7 @@ public partial class Signals : StaticBody2D
 	private bool _detected = false;
 
 
-	public void SetUpPlanet(SignalResource planetResource, Vector2 spawnPosition)
+	public void SetUpPlanet(SignalResource planetResource, Vector2I spawnPosition)
 	{
 		_planetResource = planetResource;
 		if (_planetResource != null)

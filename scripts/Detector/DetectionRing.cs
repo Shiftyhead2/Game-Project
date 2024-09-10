@@ -17,5 +17,4 @@ public partial class DetectionRing : Area2D
 		_tween.TweenProperty(GetNode("Sprite2D"), "modulate:a", 0f, 1f);
 		_tween.TweenCallback(Callable.From(QueueFree)).SetDelay(1f);
 	}
-
 }

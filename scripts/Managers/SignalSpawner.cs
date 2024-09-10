@@ -1,92 +1,122 @@
-using Godot;
 using System.Collections.Generic;
+using Godot;
 
 public partial class SignalSpawner : Node
 {
+	//I am using Godot arrays instead of C# lists here because C# lists won't show up in the Godot editor when exported.
+	//Godot arrays are very similar to C# lists.
 	[Export]
 	private Godot.Collections.Array<SignalResource> _signals = new Godot.Collections.Array<SignalResource>();
 	[Export]
 	private PackedScene _signalScene;
 
-	private const int MAX_ATTEMPTS = 100;
-	private const float MIN_DISTANCE_BETWEEN_SIGNALS = 50.0f;
-	private const float MIN_DISTANCE_FROM_POINT = 100.0f;
-	private List<Vector2> spawnedPositions = new List<Vector2>();
-	private Vector2 exclusionPoint = new Vector2(-500, 500);
+	[Export]
+	private int min_X = -5000;
+	[Export]
+	private int max_X = 5000;
 
-	private int numberOfSignalsToSpawn = 10;
+	[Export]
+	private int min_Y = -5000;
+
+	[Export]
+	private int max_Y = 5000;
+
+	private List<Vector2I> _Positions;
+
+	private int _numberOfSignalsToSpawn = 10;
+
+	private RandomNumberGenerator _randomNumberGenerator = new RandomNumberGenerator();
+
+	private List<Signals> spawnedSignals = new List<Signals>();
 
 
 
 	// Called when the node enters the scene tree for the first time.
 	public override async void _Ready()
 	{
+		//Waits until the owner of this node which is the Level Node2D is ready
+		//This is to ensure that the signals are actual spawned as children of the Level node.
 		await Owner.ToSignal(Owner, Node.SignalName.Ready);
+		_randomNumberGenerator.Randomize(); // Ensure random numbers are seeded properly
+
+		SetPositions();
+		CleanPositions();
+
+		GD.Print("Positions:" + _Positions);
+
 		SpawnSignals();
+	}
+
+
+	private void SetPositions()
+	{
+		_Positions = new List<Vector2I>();
+
+		for (int x = min_X; x <= max_X; x += 1250)
+		{
+			for (int y = min_Y; y <= max_Y; y += 1250)
+			{
+				_Positions.Add(new Vector2I(x, y));
+			}
+		}
+	}
+
+	private void CleanPositions()
+	{
+		for (int i = _Positions.Count - 1; i >= 0; i--)
+		{
+			Vector2I position = _Positions[i];
+			if (position.X == 0 && position.Y == 0)
+			{
+				GD.Print("Cleaning position: " + position + " because it's where the player spawns");
+				_Positions.RemoveAt(i);
+			}
+		}
 	}
 
 	private void SpawnSignals()
 	{
-		for (int i = 0; i < numberOfSignalsToSpawn; i++)
+		for (int i = 0; i < _numberOfSignalsToSpawn; i++)
 		{
-			Signals signalToSpawn = ResourceLoader.Load<PackedScene>(_signalScene.ResourcePath).Instantiate() as Signals;
-			Owner.AddChild(signalToSpawn);
-			signalToSpawn.SetUpPlanet(_signals[0], getSignalSpawnPosition(_signals[0]));
+			if (spawnedSignals.Count < _numberOfSignalsToSpawn)
+			{
+				Signals signalToSpawn = ResourceLoader.Load<PackedScene>(_signalScene.ResourcePath).Instantiate() as Signals;
+				Owner.AddChild(signalToSpawn);
+				signalToSpawn.SetUpPlanet(_signals[0], getSignalSpawnPosition());
+				spawnedSignals.Add(signalToSpawn);
+			}
+			else
+			{
+				Signals signalToReset = spawnedSignals[i];
+				signalToReset.SetUpPlanet(_signals[0], getSignalSpawnPosition());
+			}
 		}
 	}
 
-	private Vector2 getSignalSpawnPosition(SignalResource signal)
+	public override void _UnhandledInput(InputEvent @event)
 	{
-		RandomNumberGenerator randomNumberGenerator = new RandomNumberGenerator();
-		randomNumberGenerator.Randomize(); // Ensure random numbers are seeded properly
-
-		Vector2 spawnPosition;
-		bool isValidPosition;
-		int attemptCount = 0;
-
-		do
+#if DEBUG
+		if (@event.IsActionPressed("debug_spawn_signals"))
 		{
-			// Generate a random position within the spawn bounds
-			float x = randomNumberGenerator.RandfRange(signal.SpawnPositions[0].X, signal.SpawnPositions[1].X);
-			float y = randomNumberGenerator.RandfRange(signal.SpawnPositions[0].Y, signal.SpawnPositions[1].Y);
-			spawnPosition = new Vector2(x, y);
+			SpawnSignals();
+		}
+#endif
+	}
 
-			// Initially assume it's valid
-			isValidPosition = true;
-
-			// Check if the position is too close to the exclusion point (-500, 500)
-			if (spawnPosition.DistanceTo(exclusionPoint) < MIN_DISTANCE_FROM_POINT)
-			{
-				isValidPosition = false;
-				GD.Print("Position too close to exclusion point: " + spawnPosition);
-				continue; // Skip this position and try again
-			}
-
-			// Check if the position is too close to previously spawned signals
-			foreach (var prevPosition in spawnedPositions)
-			{
-				if (spawnPosition.DistanceTo(prevPosition) < MIN_DISTANCE_BETWEEN_SIGNALS)
-				{
-					isValidPosition = false;
-					GD.Print("Position too close to another signal: " + spawnPosition);
-					break;
-				}
-			}
-
-			attemptCount++;
-
-		} while (!isValidPosition && attemptCount < MAX_ATTEMPTS); // Stop if a valid position is found or after MAX_ATTEMPTS
-
-		// If no valid position is found after MAX_ATTEMPTS, log an error
-		if (!isValidPosition)
+	private Vector2I getSignalSpawnPosition()
+	{
+		if (_Positions.Count == 0)
 		{
-			GD.PrintErr("Could not find a valid spawn position after " + MAX_ATTEMPTS + " attempts.");
+			GD.PrintErr("No available positions to spawn a signal.");
+			return Vector2I.Zero;
 		}
 
-		// Once we have a valid position, add it to the list of spawned positions
-		spawnedPositions.Add(spawnPosition);
 
-		GD.Print("Final spawn position: " + spawnPosition);
+		int randomIndex = _randomNumberGenerator.RandiRange(0, _Positions.Count - 1);
+		Vector2I spawnPosition = _Positions[randomIndex];
+
+		GD.Print("Spawned position: " + spawnPosition);
+
 		return spawnPosition;
 	}
 }

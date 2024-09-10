@@ -5,6 +5,5 @@
 
 [resource]
 script = ExtResource("1_np5is")
-SpawnPositions = Array[Vector2]([Vector2(-3000, -3000), Vector2(3000, 3000)])
 SignalTexture = ExtResource("1_ehew1")
 IsScannable = true
