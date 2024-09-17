@@ -1,6 +1,6 @@
 ﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game Project", "Game Project.csproj", "{8DA0A9F9-1FE7-48FA-AD9A-15F32BCAB15A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game Project", "Game Project.csproj", "{00ED8760-CF04-466F-B0F0-7F29E150A7C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,11 +9,11 @@ Global
 	ExportRelease|Any CPU = ExportRelease|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8DA0A9F9-1FE7-48FA-AD9A-15F32BCAB15A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8DA0A9F9-1FE7-48FA-AD9A-15F32BCAB15A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8DA0A9F9-1FE7-48FA-AD9A-15F32BCAB15A}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
-		{8DA0A9F9-1FE7-48FA-AD9A-15F32BCAB15A}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
-		{8DA0A9F9-1FE7-48FA-AD9A-15F32BCAB15A}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
-		{8DA0A9F9-1FE7-48FA-AD9A-15F32BCAB15A}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+		{00ED8760-CF04-466F-B0F0-7F29E150A7C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00ED8760-CF04-466F-B0F0-7F29E150A7C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00ED8760-CF04-466F-B0F0-7F29E150A7C3}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
+		{00ED8760-CF04-466F-B0F0-7F29E150A7C3}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
+		{00ED8760-CF04-466F-B0F0-7F29E150A7C3}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{00ED8760-CF04-466F-B0F0-7F29E150A7C3}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
 	EndGlobalSection
 EndGlobal

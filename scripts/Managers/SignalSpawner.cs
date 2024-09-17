@@ -27,7 +27,7 @@ public partial class SignalSpawner : Node
 
 	private RandomNumberGenerator _randomNumberGenerator = new RandomNumberGenerator();
 
-	private List<Signals> spawnedSignals = new List<Signals>();
+	private Signals spawnedSignal;
 
 
 
@@ -41,10 +41,16 @@ public partial class SignalSpawner : Node
 
 		SetPositions();
 		CleanPositions();
+	}
 
-		GD.Print("Positions:" + _Positions);
+	public override void _EnterTree()
+	{
+		EventManager.OnDetectSignals += SpawnSignal;
+	}
 
-		SpawnSignals();
+	public override void _ExitTree()
+	{
+		EventManager.OnDetectSignals -= SpawnSignal;
 	}
 
 
@@ -74,23 +80,21 @@ public partial class SignalSpawner : Node
 		}
 	}
 
-	private void SpawnSignals()
+	private void SpawnSignal()
 	{
-		for (int i = 0; i < _numberOfSignalsToSpawn; i++)
+		if (spawnedSignal == null)
 		{
-			if (spawnedSignals.Count < _numberOfSignalsToSpawn)
-			{
-				Signals signalToSpawn = ResourceLoader.Load<PackedScene>(_signalScene.ResourcePath).Instantiate() as Signals;
-				Owner.AddChild(signalToSpawn);
-				signalToSpawn.SetUpPlanet(_signals[0], getSignalSpawnPosition());
-				spawnedSignals.Add(signalToSpawn);
-			}
-			else
-			{
-				Signals signalToReset = spawnedSignals[i];
-				signalToReset.SetUpPlanet(_signals[0], getSignalSpawnPosition());
-			}
+			Signals signalToSpawn = ResourceLoader.Load<PackedScene>(_signalScene.ResourcePath).Instantiate() as Signals;
+			Owner.AddChild(signalToSpawn);
+			signalToSpawn.SetUpSignal(_signals[0], getSignalSpawnPosition());
+			spawnedSignal = signalToSpawn;
 		}
+		else
+		{
+			Signals signalToReset = spawnedSignal;
+			signalToReset.SetUpSignal(_signals[0], getSignalSpawnPosition());
+		}
+
 	}
 
 	public override void _UnhandledInput(InputEvent @event)
@@ -98,7 +102,7 @@ public partial class SignalSpawner : Node
 #if DEBUG
 		if (@event.IsActionPressed("debug_spawn_signals"))
 		{
-			SpawnSignals();
+			SpawnSignal();
 		}
 #endif
 	}

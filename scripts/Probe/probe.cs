@@ -11,7 +11,7 @@ public partial class Probe : CharacterBody2D
 	private float _deacceleration = 5.0f;
 
 	[Export]
-	private float _timeBetweenScans = 5.0f;
+	private double _timeBetweenScans = 20.0f;
 
 	[Export]
 	private bool _canDetect = true;
@@ -35,6 +35,8 @@ public partial class Probe : CharacterBody2D
 	[Export]
 	private Signals _scannableSignalsInRange;
 
+	private DetectionRing _detectionRing;
+
 
 
 
@@ -45,6 +47,9 @@ public partial class Probe : CharacterBody2D
 			_scannerArea.BodyEntered += OnBody2DEntered;
 			_scannerArea.BodyExited += OnBody2DExited;
 		}
+
+		_timer.Timeout += ResetDetect;
+		GameManager.instance.SetProbe(this);
 	}
 
 	public override void _UnhandledKeyInput(InputEvent @event)
@@ -60,7 +65,7 @@ public partial class Probe : CharacterBody2D
 			}
 			else
 			{
-				ScanPlanet();
+				ScanSignal();
 			}
 		}
 	}
@@ -89,13 +94,24 @@ public partial class Probe : CharacterBody2D
 
 	private void SpawnScannerRing()
 	{
-		DetectionRing _scannerToAdd = ResourceLoader.Load<PackedScene>(_detectorPackedScene.ResourcePath).Instantiate() as DetectionRing;
-		_spawnPoint.AddChild(_scannerToAdd);
-		_timer.Start(_timeBetweenScans);
-		_canDetect = false;
+		if (_detectionRing == null)
+		{
+			DetectionRing _detectionRingToAdd = ResourceLoader.Load<PackedScene>(_detectorPackedScene.ResourcePath).Instantiate() as DetectionRing;
+			_spawnPoint.AddChild(_detectionRingToAdd);
+			_detectionRing = _detectionRingToAdd;
+			_timer.Start(_timeBetweenScans);
+			_canDetect = false;
+		}
+		else
+		{
+			_detectionRing.OnScan();
+			_timer.Start(_timeBetweenScans);
+			_canDetect = false;
+		}
+		EventManager.ExecuteOnDetectSignals();
 	}
 
-	private void ScanPlanet()
+	private void ScanSignal()
 	{
 		EventManager.ExecuteOnScanPlanet(_scannableSignalsInRange);
 	}
@@ -110,7 +126,7 @@ public partial class Probe : CharacterBody2D
 		if (body is Signals)
 		{
 			Signals collidedSignal = body as Signals;
-			if (collidedSignal.IsPlanetScannable() && collidedSignal.IsDetected())
+			if (collidedSignal.IsSignalScannable() && collidedSignal.IsDetected())
 			{
 				_scannableSignalsInRange = collidedSignal;
 			}
@@ -131,7 +147,7 @@ public partial class Probe : CharacterBody2D
 		}
 	}
 
-	public void resetDetect()
+	private void ResetDetect()
 	{
 		_canDetect = true;
 		_timer.Stop();

@@ -3,7 +3,7 @@ using Godot;
 public partial class Signals : StaticBody2D
 {
 	[Export]
-	private SignalResource _planetResource;
+	private SignalResource _signalResource;
 
 	[Export]
 	private Sprite2D _sprite;
@@ -11,26 +11,29 @@ public partial class Signals : StaticBody2D
 	[Export]
 	private bool _detected = false;
 
+	private double _detectionTime = 10f;
 
-	public void SetUpPlanet(SignalResource planetResource, Vector2I spawnPosition)
+	public override void _Ready()
 	{
-		_planetResource = planetResource;
-		if (_planetResource != null)
-		{
-			_sprite.Texture = _planetResource.SignalTexture;
-		}
-		Position = spawnPosition;
+		_sprite.Visible = false;
 	}
 
-	public void GetDetected()
+
+	public void SetUpSignal(SignalResource signalResource, Vector2I spawnPosition)
 	{
+		_signalResource = signalResource;
+		if (_signalResource != null)
+		{
+			_sprite.Texture = _signalResource.SignalTexture;
+		}
+		Position = spawnPosition;
 		_sprite.Visible = true;
 		_detected = true;
 	}
 
-	public bool IsPlanetScannable()
+	public bool IsSignalScannable()
 	{
-		return _planetResource.IsScannable;
+		return _signalResource.IsScannable;
 	}
 
 	public bool IsDetected()
