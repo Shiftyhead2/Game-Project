@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=3 uid="uid://b688vcriyntw6"]
 
 [ext_resource type="Texture2D" uid="uid://dp3rgbaubj4bu" path="res://icon.svg" id="1_i5b1x"]
-[ext_resource type="Script" path="res://scripts/Probe/Probe.cs" id="1_qu020"]
-[ext_resource type="PackedScene" uid="uid://cpbln316qkt1h" path="res://scenes/detector_ring.tscn" id="2_a18jf"]
+[ext_resource type="Script" path="res://scripts/Probe/Probe.cs" id="1_oo6df"]
+[ext_resource type="PackedScene" uid="uid://cpbln316qkt1h" path="res://scenes/detector_ring.tscn" id="2_2nmen"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1n2ho"]
 size = Vector2(131, 133)
@@ -12,10 +12,10 @@ radius = 140.0
 
 [node name="Probe" type="CharacterBody2D" node_paths=PackedStringArray("_timer", "_spawnPoint", "_scannerArea")]
 z_index = 2
-script = ExtResource("1_qu020")
+script = ExtResource("1_oo6df")
 _timer = NodePath("Timer")
 _spawnPoint = NodePath("SpawnPoint")
-_detectorPackedScene = ExtResource("2_a18jf")
+_detectorPackedScene = ExtResource("2_2nmen")
 _scannerArea = NodePath("ScannerRadius")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -35,5 +35,3 @@ collision_mask = 4
 shape = SubResource("CircleShape2D_o0jrw")
 
 [node name="Timer" type="Timer" parent="."]
-
-[connection signal="timeout" from="Timer" to="." method="resetDetect"]
