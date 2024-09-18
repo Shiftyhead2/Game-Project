@@ -1,15 +1,16 @@
-[gd_scene load_steps=7 format=3 uid="uid://dmiv4en5wmfp6"]
+[gd_scene load_steps=8 format=3 uid="uid://dmiv4en5wmfp6"]
 
 [ext_resource type="Script" path="res://scripts/Signals/Signals.cs" id="1_w0evf"]
 [ext_resource type="Shader" path="res://shaders/blip.gdshader" id="2_au10c"]
 [ext_resource type="Texture2D" uid="uid://cendhexyh3qfg" path="res://sprites/Planet.png" id="3_u8ccy"]
 [ext_resource type="Script" path="res://scripts/TargetReticle/TargetIndicator.cs" id="4_tp2tf"]
+[ext_resource type="Texture2D" uid="uid://dbprth58u2bxb" path="res://sprites/Dots.png" id="5_b7on7"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2uc0e"]
 shader = ExtResource("2_au10c")
-shader_parameter/cutout = 0.2
+shader_parameter/cutout = 0.0
 shader_parameter/inner_fill = 0.15
-shader_parameter/blink_speed = 2.0
+shader_parameter/blink_speed = 1.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_d1fkv"]
 radius = 64.0078
@@ -19,6 +20,9 @@ collision_layer = 6
 collision_mask = 0
 script = ExtResource("1_w0evf")
 _sprite = NodePath("Sprite2D")
+_defaultNotScannedColor = Color(1, 1, 1, 1)
+_inScanRangeColor = Color(0.109804, 0.52549, 1, 1)
+_scannedColor = Color(0, 0.605694, 0.0231141, 1)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_2uc0e")
@@ -35,6 +39,9 @@ _visibleOnScreenNotifier = NodePath("../VisibleOnScreenNotifier2D")
 [node name="Line2D" type="Line2D" parent="TargetIndicator"]
 top_level = true
 z_index = 3
+texture_repeat = 2
+texture = ExtResource("5_b7on7")
+texture_mode = 1
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
 rect = Rect2(-64, -64, 128, 128)

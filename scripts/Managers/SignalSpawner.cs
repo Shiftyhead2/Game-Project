@@ -23,8 +23,6 @@ public partial class SignalSpawner : Node
 
 	private List<Vector2I> _Positions;
 
-	private int _numberOfSignalsToSpawn = 10;
-
 	private RandomNumberGenerator _randomNumberGenerator = new RandomNumberGenerator();
 
 	private Signals spawnedSignal;
@@ -58,9 +56,9 @@ public partial class SignalSpawner : Node
 	{
 		_Positions = new List<Vector2I>();
 
-		for (int x = min_X; x <= max_X; x += 1250)
+		for (int x = min_X; x <= max_X; x += 500)
 		{
-			for (int y = min_Y; y <= max_Y; y += 1250)
+			for (int y = min_Y; y <= max_Y; y += 500)
 			{
 				_Positions.Add(new Vector2I(x, y));
 			}

@@ -33,7 +33,7 @@ public partial class Probe : CharacterBody2D
 	private Area2D _scannerArea;
 
 	[Export]
-	private Signals _scannableSignalsInRange;
+	private Signals _scannableSignalInRange;
 
 	private DetectionRing _detectionRing;
 
@@ -54,19 +54,17 @@ public partial class Probe : CharacterBody2D
 
 	public override void _UnhandledKeyInput(InputEvent @event)
 	{
+		if (@event.IsActionPressed("detect"))
+		{
+			if (_canDetect)
+			{
+				SpawnScannerRing();
+			}
+		}
+
 		if (@event.IsActionPressed("scan"))
 		{
-			if (_scannableSignalsInRange == null)
-			{
-				if (_canDetect)
-				{
-					SpawnScannerRing();
-				}
-			}
-			else
-			{
-				ScanSignal();
-			}
+			ScanSignal();
 		}
 	}
 
@@ -113,12 +111,17 @@ public partial class Probe : CharacterBody2D
 
 	private void ScanSignal()
 	{
-		EventManager.ExecuteOnScanPlanet(_scannableSignalsInRange);
+		if (_scannableSignalInRange == null)
+		{
+			return;
+		}
+
+		EventManager.ExecuteOnScanSignal(_scannableSignalInRange);
 	}
 
 	private void OnBody2DEntered(Node2D body)
 	{
-		if (_scannableSignalsInRange != null)
+		if (_scannableSignalInRange != null)
 		{
 			return;
 		}
@@ -128,7 +131,8 @@ public partial class Probe : CharacterBody2D
 			Signals collidedSignal = body as Signals;
 			if (collidedSignal.IsSignalScannable() && collidedSignal.IsDetected())
 			{
-				_scannableSignalsInRange = collidedSignal;
+				_scannableSignalInRange = collidedSignal;
+				_scannableSignalInRange.SetIsInScanRange(true);
 			}
 		}
 
@@ -136,14 +140,15 @@ public partial class Probe : CharacterBody2D
 
 	private void OnBody2DExited(Node2D body)
 	{
-		if (_scannableSignalsInRange == null)
+		if (_scannableSignalInRange == null)
 		{
 			return;
 		}
 
 		if (body is Signals)
 		{
-			_scannableSignalsInRange = null;
+			_scannableSignalInRange.SetIsInScanRange(false);
+			_scannableSignalInRange = null;
 		}
 	}
 

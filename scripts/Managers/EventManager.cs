@@ -2,13 +2,13 @@ using System;
 
 public static class EventManager
 {
-	public static Action<Signals> OnScanPlanet;
+	public static Action<Signals> OnScanSignal;
 	public static Action OnDetectSignals;
 
 
-	public static void ExecuteOnScanPlanet(Signals planet = null)
+	public static void ExecuteOnScanSignal(Signals signal = null)
 	{
-		OnScanPlanet?.Invoke(planet);
+		OnScanSignal?.Invoke(signal);
 	}
 
 	public static void ExecuteOnDetectSignals()

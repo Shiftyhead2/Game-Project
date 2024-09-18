@@ -13,9 +13,34 @@ public partial class Signals : StaticBody2D
 
 	private double _detectionTime = 10f;
 
+	[Export]
+	private Color _defaultNotScannedColor;
+
+	[Export]
+	private Color _inScanRangeColor;
+
+	[Export]
+	private Color _scannedColor;
+
+	[Export]
+	private bool _isInScanRange = false;
+	[Export]
+	private bool _isScanned = false;
+
 	public override void _Ready()
 	{
 		_sprite.Visible = false;
+	}
+
+
+	public override void _EnterTree()
+	{
+		EventManager.OnScanSignal += SetScanned;
+	}
+
+	public override void _ExitTree()
+	{
+		EventManager.OnScanSignal -= SetScanned;
 	}
 
 
@@ -28,7 +53,10 @@ public partial class Signals : StaticBody2D
 		}
 		Position = spawnPosition;
 		_sprite.Visible = true;
+		_sprite.Modulate = _defaultNotScannedColor;
 		_detected = true;
+		_isScanned = false;
+		_isInScanRange = false;
 	}
 
 	public bool IsSignalScannable()
@@ -39,5 +67,40 @@ public partial class Signals : StaticBody2D
 	public bool IsDetected()
 	{
 		return _detected;
+	}
+
+	public void SetIsInScanRange(bool isInScanRange)
+	{
+		if (_isScanned)
+		{
+			return;
+		}
+
+		_isInScanRange = isInScanRange;
+
+		if (_isInScanRange)
+		{
+			_sprite.Modulate = _inScanRangeColor;
+		}
+		else
+		{
+			_sprite.Modulate = _defaultNotScannedColor;
+		}
+	}
+
+
+	private void SetScanned(Signals signal)
+	{
+		Rid passedSignalRID = signal.GetRid();
+		Rid currentSignalRID = GetRid();
+
+		if (passedSignalRID != currentSignalRID)
+		{
+			GD.PrintErr($"Scanned planet RID:{passedSignalRID} is not the same as {currentSignalRID}");
+		}
+
+		_isScanned = true;
+
+		_sprite.Modulate = _scannedColor;
 	}
 }
