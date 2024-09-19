@@ -20,7 +20,7 @@ collision_layer = 6
 collision_mask = 0
 script = ExtResource("1_w0evf")
 _sprite = NodePath("Sprite2D")
-_defaultNotScannedColor = Color(1, 1, 1, 1)
+_defaultNotScannedColor = Color(0.85862, 0, 0.165398, 1)
 _inScanRangeColor = Color(0.109804, 0.52549, 1, 1)
 _scannedColor = Color(0, 0.605694, 0.0231141, 1)
 

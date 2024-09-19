@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=3 uid="uid://d0seox5hvpsf"]
+
+[ext_resource type="Shader" path="res://shaders/starfield.gdshader" id="1_cytcn"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ayue4"]
+noise_type = 0
+frequency = 0.33
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_myti4"]
+noise = SubResource("FastNoiseLite_ayue4")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_215pf"]
+shader = ExtResource("1_cytcn")
+shader_parameter/resolution = Vector2(1980, 1080)
+shader_parameter/density = 10.0
+shader_parameter/blink_intensity = 0.25
+shader_parameter/blink_speed_range = 5.0
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_myti4")
+
+[node name="StarfieldParent" type="Node2D"]
+
+[node name="Starfield" type="Parallax2D" parent="."]
+repeat_size = Vector2(1920, 1080)
+repeat_times = 10
+
+[node name="ColorRect" type="ColorRect" parent="Starfield"]
+material = SubResource("ShaderMaterial_215pf")
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_right = 1920.0
+offset_bottom = 1080.0
+grow_horizontal = 2
+grow_vertical = 2

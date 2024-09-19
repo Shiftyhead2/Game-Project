@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://bttt7gb1duv0o"]
+[gd_scene load_steps=7 format=3 uid="uid://bttt7gb1duv0o"]
 
 [ext_resource type="Script" path="res://scripts/Managers/SignalSpawner.cs" id="1_rsqxf"]
 [ext_resource type="PackedScene" uid="uid://b688vcriyntw6" path="res://scenes/probe.tscn" id="1_tu4y6"]
 [ext_resource type="Script" path="res://scripts/Camera/Camera2DFollow.cs" id="1_wsdmx"]
 [ext_resource type="Resource" uid="uid://be4y82h0s3gpe" path="res://Resources/Signals/RandomSignal.tres" id="2_oyuod"]
 [ext_resource type="PackedScene" uid="uid://dmiv4en5wmfp6" path="res://scenes/Signal.tscn" id="3_vaewb"]
+[ext_resource type="PackedScene" uid="uid://d0seox5hvpsf" path="res://scenes/starfield.tscn" id="6_ewp8o"]
 
 [node name="Level" type="Node2D"]
 
@@ -13,9 +14,12 @@ script = ExtResource("1_rsqxf")
 _signals = [ExtResource("2_oyuod")]
 _signalScene = ExtResource("3_vaewb")
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("_probe")]
 zoom = Vector2(0.75, 0.75)
 script = ExtResource("1_wsdmx")
-_followNode = NodePath("../Probe")
+_probe = NodePath("../Probe")
 
 [node name="Probe" parent="." instance=ExtResource("1_tu4y6")]
+top_level = true
+
+[node name="Starfield" parent="." instance=ExtResource("6_ewp8o")]
