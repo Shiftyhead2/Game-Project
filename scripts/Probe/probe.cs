@@ -49,7 +49,7 @@ public partial class Probe : CharacterBody2D
 		}
 
 		_timer.Timeout += ResetDetect;
-		GameManager.instance.SetProbe(this);
+		GameManager.Instance.SetProbe(this);
 	}
 
 	public override void _UnhandledKeyInput(InputEvent @event)
@@ -94,9 +94,9 @@ public partial class Probe : CharacterBody2D
 	{
 		if (_detectionRing == null)
 		{
-			DetectionRing _detectionRingToAdd = ResourceLoader.Load<PackedScene>(_detectorPackedScene.ResourcePath).Instantiate() as DetectionRing;
-			_spawnPoint.AddChild(_detectionRingToAdd);
-			_detectionRing = _detectionRingToAdd;
+			DetectionRing detectionRingToAdd = ResourceLoader.Load<PackedScene>(_detectorPackedScene.ResourcePath).Instantiate() as DetectionRing;
+			_spawnPoint.AddChild(detectionRingToAdd);
+			_detectionRing = detectionRingToAdd;
 			_timer.Start(_timeBetweenScans);
 			_canDetect = false;
 		}

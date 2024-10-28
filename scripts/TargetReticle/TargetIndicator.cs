@@ -19,7 +19,7 @@ public partial class TargetIndicator : Node2D
 	{
 		await Owner.ToSignal(Owner, Node.SignalName.Ready);
 		_owner = Owner as Signals;
-		_probe = GameManager.instance.GetProbe();
+		_probe = GameManager.Instance.GetProbe();
 	}
 
 

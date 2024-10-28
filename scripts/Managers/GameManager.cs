@@ -2,19 +2,19 @@ using Godot;
 
 public partial class GameManager : Node
 {
-	public static GameManager instance { get; private set; }
+	public static GameManager Instance { get; private set; }
 
 	private static Probe _probe;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		if (instance != null)
+		if (Instance != null)
 		{
 			QueueFree();
 			return;
 		}
-		instance = this;
+		Instance = this;
 	}
 
 

@@ -33,7 +33,7 @@ public partial class DetectionRing : Area2D
 		{
 			_tween.Kill();
 		}
-		_tween = CreateTween().SetParallel(true).SetEase(Tween.EaseType.Out).SetTrans(Tween.TransitionType.Sine);
+		_tween = CreateTween().SetParallel().SetEase(Tween.EaseType.Out).SetTrans(Tween.TransitionType.Sine);
 
 		_tween.TweenProperty(this, "scale", new Vector2(5, 5), 0.5f);
 		_tween.TweenProperty(_sprite, "modulate", new Color(_sprite.Modulate.R, _sprite.Modulate.G, _sprite.Modulate.B, 0f), 1f);

@@ -91,12 +91,12 @@ public partial class Signals : StaticBody2D
 
 	private void SetScanned(Signals signal)
 	{
-		Rid passedSignalRID = signal.GetRid();
-		Rid currentSignalRID = GetRid();
+		Rid passedSignalRid = signal.GetRid();
+		Rid currentSignalRid = GetRid();
 
-		if (passedSignalRID != currentSignalRID)
+		if (passedSignalRid != currentSignalRid)
 		{
-			GD.PrintErr($"Scanned planet RID:{passedSignalRID} is not the same as {currentSignalRID}");
+			Logger.LogError(Name,$"Scanned signal Rid: {passedSignalRid} is not the same as Rid: {currentSignalRid}");
 		}
 
 		_isScanned = true;
