@@ -3,31 +3,28 @@ using Godot;
 
 public partial class SignalSpawner : Node
 {
-	//I am using Godot arrays instead of C# lists here because C# lists won't show up in the Godot editor when exported.
-	//Godot arrays are very similar to C# lists.
+	//I am using Godot/Redot arrays instead of C# lists here because C# lists won't show up in the Godot/Redot editor when exported.
+	//Godot/Redot arrays are very similar to C# lists.
 	[Export]
 	private Godot.Collections.Array<SignalResource> _signals = new Godot.Collections.Array<SignalResource>();
 	[Export]
 	private PackedScene _signalScene;
 
 	[Export]
-	private int min_X = -5000;
+	private int _minX = -5000;
 	[Export]
-	private int max_X = 5000;
-
-	[Export]
-	private int min_Y = -5000;
+	private int _maxX = 5000;
 
 	[Export]
-	private int max_Y = 5000;
+	private int _minY = -5000;
 
-	private List<Vector2I> _Positions;
+	[Export]
+	private int _maxY = 5000;
 
-	private int _numberOfSignalsToSpawn = 10;
+	private List<Vector2I> _positions;
+	
 
-	private RandomNumberGenerator _randomNumberGenerator = new RandomNumberGenerator();
-
-	private Signals spawnedSignal;
+	private Signals _spawnedSignal;
 
 
 
@@ -37,7 +34,6 @@ public partial class SignalSpawner : Node
 		//Waits until the owner of this node which is the Level Node2D is ready
 		//This is to ensure that the signals are actual spawned as children of the Level node.
 		await Owner.ToSignal(Owner, Node.SignalName.Ready);
-		_randomNumberGenerator.Randomize(); // Ensure random numbers are seeded properly
 
 		SetPositions();
 		CleanPositions();
@@ -56,43 +52,43 @@ public partial class SignalSpawner : Node
 
 	private void SetPositions()
 	{
-		_Positions = new List<Vector2I>();
+		_positions = new List<Vector2I>();
 
-		for (int x = min_X; x <= max_X; x += 1250)
+		for (int x = _minX; x <= _maxX; x += 500)
 		{
-			for (int y = min_Y; y <= max_Y; y += 1250)
+			for (int y = _minY; y <= _maxY; y += 500)
 			{
-				_Positions.Add(new Vector2I(x, y));
+				_positions.Add(new Vector2I(x, y));
 			}
 		}
 	}
 
 	private void CleanPositions()
 	{
-		for (int i = _Positions.Count - 1; i >= 0; i--)
+		for (int i = _positions.Count - 1; i >= 0; i--)
 		{
-			Vector2I position = _Positions[i];
-			if (position.X == 0 && position.Y == 0)
+			Vector2I position = _positions[i];
+			if (position is { X: 0, Y: 0 })
 			{
-				GD.Print("Cleaning position: " + position + " because it's where the player spawns");
-				_Positions.RemoveAt(i);
+				Logger.LogMessage(Name,$"Removing position (0,0) because it's where the player spawns");
+				_positions.RemoveAt(i);
 			}
 		}
 	}
 
 	private void SpawnSignal()
 	{
-		if (spawnedSignal == null)
+		if (_spawnedSignal == null)
 		{
-			Signals signalToSpawn = ResourceLoader.Load<PackedScene>(_signalScene.ResourcePath).Instantiate() as Signals;
+			var signalToSpawn = ResourceLoader.Load<PackedScene>(_signalScene.ResourcePath).Instantiate() as Signals;
 			Owner.AddChild(signalToSpawn);
-			signalToSpawn.SetUpSignal(_signals[0], getSignalSpawnPosition());
-			spawnedSignal = signalToSpawn;
+			signalToSpawn?.SetUpSignal(_signals[0], GetSignalSpawnPosition());
+			_spawnedSignal = signalToSpawn;
 		}
 		else
 		{
-			Signals signalToReset = spawnedSignal;
-			signalToReset.SetUpSignal(_signals[0], getSignalSpawnPosition());
+			var signalToReset = _spawnedSignal;
+			signalToReset.SetUpSignal(_signals[0], GetSignalSpawnPosition());
 		}
 
 	}
@@ -106,20 +102,21 @@ public partial class SignalSpawner : Node
 		}
 #endif
 	}
-
-	private Vector2I getSignalSpawnPosition()
+	
+	
+	private Vector2I GetSignalSpawnPosition()
 	{
-		if (_Positions.Count == 0)
+		if (_positions.Count == 0)
 		{
-			GD.PrintErr("No available positions to spawn a signal.");
+			Logger.LogError(Name,$"No positions could be found!");
 			return Vector2I.Zero;
 		}
 
 
-		int randomIndex = _randomNumberGenerator.RandiRange(0, _Positions.Count - 1);
-		Vector2I spawnPosition = _Positions[randomIndex];
+		int randomIndex = RandomNumberGeneratorManager.Instance.GetRandomNumber(0,_positions.Count - 1);
+		Vector2I spawnPosition = _positions[randomIndex];
 
-		GD.Print("Spawned position: " + spawnPosition);
+		Logger.LogMessage(Name,$"Spawning signal at {spawnPosition}");
 
 		return spawnPosition;
 	}
