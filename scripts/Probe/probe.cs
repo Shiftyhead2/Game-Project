@@ -52,7 +52,7 @@ public partial class Probe : CharacterBody2D
 		GameManager.Instance.SetProbe(this);
 	}
 
-	public override void _UnhandledKeyInput(InputEvent @event)
+	public override void _UnhandledInput(InputEvent @event)
 	{
 		if (@event.IsActionPressed("detect"))
 		{

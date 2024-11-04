@@ -1,0 +1,35 @@
+[gd_scene load_steps=7 format=3 uid="uid://cntbv61qx4mg6"]
+
+[ext_resource type="PackedScene" uid="uid://c2awxkbxlojal" path="res://scenes/Player.tscn" id="1_luksl"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bcdhd"]
+albedo_color = Color(0.54099, 0.54099, 0.54099, 1)
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_3fv6d"]
+
+[sub_resource type="Sky" id="Sky_xl8n4"]
+sky_material = SubResource("ProceduralSkyMaterial_3fv6d")
+
+[sub_resource type="Environment" id="Environment_xn640"]
+background_mode = 2
+sky = SubResource("Sky_xl8n4")
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_keikm"]
+
+[node name="TestLevel" type="Node3D"]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.60096, 0, 1.14162)
+use_collision = true
+size = Vector3(113.203, 0.274, 109.198)
+material = SubResource("StandardMaterial3D_bcdhd")
+
+[node name="Player" parent="." instance=ExtResource("1_luksl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.32545, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_xn640")
+camera_attributes = SubResource("CameraAttributesPractical_keikm")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.244241, 0.969715, 0, -0.969715, 0.244241, 0, 53, 0)
