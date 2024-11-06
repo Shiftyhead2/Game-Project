@@ -80,7 +80,7 @@ public partial class SignalSpawner : Node
 	{
 		if (_spawnedSignal == null)
 		{
-			var signalToSpawn = ResourceLoader.Load<PackedScene>(_signalScene.ResourcePath).Instantiate() as Signals;
+			var signalToSpawn = _signalScene.Instantiate() as Signals;
 			Owner.AddChild(signalToSpawn);
 			signalToSpawn?.SetUpSignal(_signals[0], GetSignalSpawnPosition());
 			_spawnedSignal = signalToSpawn;

@@ -2,12 +2,22 @@ using Godot;
 
 public partial class Player : CharacterBody3D
 {
+	[ExportGroup("Sensitivity variables")]
 	[Export] private float _lookSensitivity = 0.006f;
 	[Export] private float _controllerLookSensitivity = 0.05f;
+	
+	[ExportGroup("Movement variables")]
 	[Export] private float _jumpVelocity = 6.0f;
 	[Export] private float _walkSpeed = 7.0f;
 	[Export] private float _sprintSpeed = 8.5f;
+	
+	[ExportGroup("Node variables")]
 	[Export] private Node3D _cameraNode;
+	
+	[ExportGroup("Air control variables")]
+	[Export] private float _airCap = 0.85f;
+	[Export] private float _airAcceleration = 800.0f;
+	[Export] private float _airMoveSpeed = 500.0f;
 
 	private float _headbobMoveAmount = 0.06f;
 	private float _headbobFrequency = 2.4f;
@@ -42,6 +52,11 @@ public partial class Player : CharacterBody3D
 
 		if (Input.GetMouseMode() == Input.MouseModeEnum.Captured)
 		{
+			if (GamepadInputManager.Instance?.GetControllerStatus() == true)
+			{
+				return;
+			}
+			
 			if (@event is InputEventMouseMotion motion)
 			{
 				RotateY(-motion.Relative.X * _lookSensitivity);
@@ -61,8 +76,6 @@ public partial class Player : CharacterBody3D
 	{
 		_inputDir = Input.GetVector("move_left","move_right","move_up","move_down").Normalized();
 		_wishDir = GlobalTransform.Basis * new Vector3(_inputDir.X,0,_inputDir.Y);
-		HandleControllerLookInput((float)delta);
-
 
 		if (IsOnFloor())
 		{
@@ -78,6 +91,7 @@ public partial class Player : CharacterBody3D
 		}
 
 		Velocity = _velocity;
+		HandleControllerLookInput((float)delta);
 		MoveAndSlide();
 
 	}
@@ -95,6 +109,18 @@ public partial class Player : CharacterBody3D
 	private void HandleAirPhysics(float delta)
 	{
 		_velocity.Y -= _gravity * delta;
+
+		float currentSpeedInWishedDirection = _velocity.Dot(_wishDir);
+
+		float cappedSpeed = Mathf.Min((_airMoveSpeed * _wishDir).Length(), _airCap);
+		float addSpeedTillCap = cappedSpeed - currentSpeedInWishedDirection;
+
+		if (addSpeedTillCap > 0)
+		{
+			float accelerationSpeed = _airAcceleration * _airMoveSpeed * delta;
+			accelerationSpeed = Mathf.Min(accelerationSpeed, addSpeedTillCap);
+			_velocity += accelerationSpeed * _wishDir;
+		}
 	}
 
 	private void HandleGroundPhysics(float delta)
@@ -107,6 +133,11 @@ public partial class Player : CharacterBody3D
 
 	private void HandleControllerLookInput(float delta)
 	{
+		if (GamepadInputManager.Instance?.GetControllerStatus() == false)
+		{
+			return;
+		}
+		
 		Vector2 targetLook = Input.GetVector("look_left", "look_right", "look_down", "look_up").Normalized();
 		
 

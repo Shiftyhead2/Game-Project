@@ -7,7 +7,7 @@ public static class Logger
 	public static void LogMessage(string from, string message)
 	{
 		GetCurrentTime();
-		GD.Print($"{_dateTime.ToLongTimeString()} {from}: {message}");
+		GD.Print($"{_dateTime.ToLongTimeString()} [INFO] {from}: {message}");
 	}
 
 	public static void LogWarning(string from, string message)
